@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Google.Cloud.Vision.V1;
 using IronOcr;
 
 namespace KanjiOcr
@@ -14,6 +16,8 @@ namespace KanjiOcr
     /// </summary>
     public partial class MainWindow : Window
     {
+        public readonly string savePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "image.png");
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,7 +32,7 @@ namespace KanjiOcr
         {
             Output.Text = "";
 
-            string savePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "image.png") ;
+            //string savePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "image.png") ;
 
             FileStream fs = new FileStream(savePath, FileMode.Create);
 
@@ -41,9 +45,28 @@ namespace KanjiOcr
             encoder.Save(fs);
             fs.Close();
 
-            var Result = new IronTesseract().Read(savePath).Text;
+            //var Result = new IronTesseract().Read(savePath).Text;
+
+            var Result = DetectText();
 
             Output.Text = Result;
+        }
+
+        public string DetectText()
+        {
+            var image = Google.Cloud.Vision.V1.Image.FromFile(savePath);
+
+            ImageAnnotatorClient client = ImageAnnotatorClient.Create();
+            IReadOnlyList<EntityAnnotation> textAnnotations = client.DetectText(image);
+
+            string output = "";
+
+            foreach (EntityAnnotation text in textAnnotations)
+            {
+                output += $"Description: {text.Description}";
+            }
+
+            return output;
         }
 
         private void drawing_MouseDown_1(object sender, MouseButtonEventArgs e)
