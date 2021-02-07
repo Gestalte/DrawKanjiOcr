@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IronOcr;
 
 namespace KanjiOcr
 {
@@ -33,19 +26,24 @@ namespace KanjiOcr
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            string savePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "image.jpg") ;
+            Output.Text = "";
+
+            string savePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "image.png") ;
 
             FileStream fs = new FileStream(savePath, FileMode.Create);
 
             RenderTargetBitmap rtb = new RenderTargetBitmap((int)Drawing.ActualWidth, (int)Drawing.ActualHeight, 96d, 96d, PixelFormats.Default);
             rtb.Render(Drawing);
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(rtb));
 
             encoder.Save(fs);
             fs.Close();
 
-            MessageBox.Show($"File saved to: {savePath}");
+            var Result = new IronTesseract().Read(savePath).Text;
+
+            Output.Text = Result;
         }
 
         private void drawing_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -75,6 +73,7 @@ namespace KanjiOcr
         private void btnErase_Click(object sender, RoutedEventArgs e)
         {
             Drawing.EditingMode = InkCanvasEditingMode.EraseByStroke;
+            Output.Text = "";
         }
     }
 }
