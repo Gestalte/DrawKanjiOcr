@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Google.Cloud.Vision.V1;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,8 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Google.Cloud.Vision.V1;
-using IronOcr;
 
 namespace KanjiOcr
 {
@@ -26,6 +27,7 @@ namespace KanjiOcr
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             Drawing.Strokes.Clear();
+            Output.Text = "";
         }
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -54,19 +56,34 @@ namespace KanjiOcr
 
         public string DetectText()
         {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddUserSecrets<MainWindow>()
+                .Build();
+
+            var credPath = config.GetSection("CredentialsFilePath").Value;
+
+            System.Environment.SetEnvironmentVariable
+                ("GOOGLE_APPLICATION_CREDENTIALS"
+                , credPath
+                );
+
+            string Pathsave = System.Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
+
             var image = Google.Cloud.Vision.V1.Image.FromFile(savePath);
 
             ImageAnnotatorClient client = ImageAnnotatorClient.Create();
+
             IReadOnlyList<EntityAnnotation> textAnnotations = client.DetectText(image);
 
             string output = "";
 
             foreach (EntityAnnotation text in textAnnotations)
             {
-                output += $"Description: {text.Description}";
+                output += (text.Description == "" ? "FAIL" : text.Description) + "\n";
             }
 
-            return output;
+            return output == "" ? "No matches" : output;
         }
 
         private void drawing_MouseDown_1(object sender, MouseButtonEventArgs e)
