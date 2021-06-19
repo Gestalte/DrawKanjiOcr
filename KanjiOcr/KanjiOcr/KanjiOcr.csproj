@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Vision.V1" Version="2.2.0" />
-    <PackageReference Include="IronOcr.Languages.Japanese" Version="2020.11.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
   </ItemGroup>
 

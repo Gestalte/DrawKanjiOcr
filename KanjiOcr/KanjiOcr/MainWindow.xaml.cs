@@ -22,6 +22,18 @@ namespace KanjiOcr
         public MainWindow()
         {
             InitializeComponent();
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddUserSecrets<MainWindow>()
+                .Build();
+
+            var credPath = config.GetSection("CredentialsFilePath").Value;
+
+            System.Environment.SetEnvironmentVariable
+                ("GOOGLE_APPLICATION_CREDENTIALS"
+                , credPath
+                );
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -34,8 +46,6 @@ namespace KanjiOcr
         {
             Output.Text = "";
 
-            //string savePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "image.png") ;
-
             FileStream fs = new FileStream(savePath, FileMode.Create);
 
             RenderTargetBitmap rtb = new RenderTargetBitmap((int)Drawing.ActualWidth, (int)Drawing.ActualHeight, 96d, 96d, PixelFormats.Default);
@@ -47,8 +57,6 @@ namespace KanjiOcr
             encoder.Save(fs);
             fs.Close();
 
-            //var Result = new IronTesseract().Read(savePath).Text;
-
             var Result = DetectText();
 
             Output.Text = Result;
@@ -56,20 +64,6 @@ namespace KanjiOcr
 
         public string DetectText()
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddUserSecrets<MainWindow>()
-                .Build();
-
-            var credPath = config.GetSection("CredentialsFilePath").Value;
-
-            System.Environment.SetEnvironmentVariable
-                ("GOOGLE_APPLICATION_CREDENTIALS"
-                , credPath
-                );
-
-            string Pathsave = System.Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
-
             var image = Google.Cloud.Vision.V1.Image.FromFile(savePath);
 
             ImageAnnotatorClient client = ImageAnnotatorClient.Create();
@@ -93,7 +87,7 @@ namespace KanjiOcr
             double x = e.GetPosition(Drawing).X;
             double y = e.GetPosition(Drawing).Y;
 
-            Ellipse elipsa = new Ellipse
+            var penTip = new Ellipse
             {
                 StrokeThickness = 3,
                 Stroke = Brushes.Red,
@@ -102,7 +96,7 @@ namespace KanjiOcr
                 Height = 20
             };
 
-            Drawing.Children.Add(elipsa);
+            Drawing.Children.Add(penTip);
         }
 
         private void btnWrite_Click(object sender, RoutedEventArgs e)
@@ -113,7 +107,6 @@ namespace KanjiOcr
         private void btnErase_Click(object sender, RoutedEventArgs e)
         {
             Drawing.EditingMode = InkCanvasEditingMode.EraseByStroke;
-            Output.Text = "";
         }
     }
 }
