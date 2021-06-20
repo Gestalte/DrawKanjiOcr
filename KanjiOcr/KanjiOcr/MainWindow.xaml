@@ -5,24 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KanjiOcr"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
+        Title="Kanji OCR" Height="500" Width="500">
     <Grid Background="AliceBlue">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="4*"></RowDefinition>
-            <RowDefinition Height=".5*"></RowDefinition>
-            <RowDefinition Height=".5*"></RowDefinition>
-            <RowDefinition Height=".5*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
-        <InkCanvas Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" x:Name="Drawing" MouseDown="drawing_MouseDown_1"></InkCanvas>
-        <Button Grid.Column="0" Grid.Row="1" x:Name="btnWrite" Click="btnWrite_Click">Write</Button>
-        <Button Grid.Column="1" Grid.Row="1" x:Name="btnErase" Click="btnErase_Click">Erase</Button>
-        <Button Grid.Column="2" Grid.Row="1" x:Name="btnClear" Click="btnClear_Click">Clear</Button>
-        <Button Grid.Column="1" Grid.Row="2" x:Name="btnSubmit" Click="btnSubmit_Click">Search</Button>
-        <TextBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Name="Output"></TextBox>
+
+        <StackPanel VerticalAlignment="Top" Panel.ZIndex="2" Orientation="Horizontal">
+            <Button Margin="2" Width="60" Height="60" x:Name="btnWrite"  FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnWrite_Click">Write</Button>
+            <Button Margin="2" Width="60" Height="60" x:Name="btnErase"  FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnErase_Click">Erase</Button>
+            <Button Margin="2" Width="60" Height="60" x:Name="btnClear"  FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnClear_Click">Clear</Button>
+            <Button Margin="2" Width="60" Height="60" x:Name="btnSubmit" FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnSubmit_Click">Search</Button>
+        </StackPanel>
+
+        <InkCanvas Panel.ZIndex="1" x:Name="Drawing" MouseDown="drawing_MouseDown_1"></InkCanvas>
+
+        <TextBox Grid.Row="1" Name="Output" FontSize="26" BorderThickness="2" BorderBrush="LightPink"  Background="FloralWhite" Foreground="DeepPink"></TextBox>
     </Grid>
 </Window>

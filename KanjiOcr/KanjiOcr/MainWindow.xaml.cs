@@ -44,11 +44,20 @@ namespace KanjiOcr
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: Try to do this without saving the image.
+
             Output.Text = "";
 
             FileStream fs = new FileStream(savePath, FileMode.Create);
 
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)Drawing.ActualWidth, (int)Drawing.ActualHeight, 96d, 96d, PixelFormats.Default);
+            RenderTargetBitmap rtb = new RenderTargetBitmap
+                ((int)Drawing.ActualWidth
+                , (int)Drawing.ActualHeight
+                , 96d
+                , 96d
+                , PixelFormats.Default
+                );
+
             rtb.Render(Drawing);
 
             PngBitmapEncoder encoder = new PngBitmapEncoder();
