@@ -74,6 +74,7 @@
             BorderThickness="2"
             BorderBrush="LightPink"
             Background="FloralWhite"
-            Foreground="DeepPink"/>
+            Foreground="DeepPink"
+            IsReadOnly="True"/>
     </Grid>
 </Window>
