@@ -44,7 +44,7 @@ namespace KanjiOcr
             Output.Text = "";
         }
 
-        private async Task MakeImage()
+        private void MakeImage()
         {
             FileStream fs = new FileStream(savePath, FileMode.Create);
 
@@ -71,7 +71,7 @@ namespace KanjiOcr
 
             Output.Text = "Searching, please wait...";
 
-            await MakeImage();
+            MakeImage();
 
             var Result = await DetectText();
 
