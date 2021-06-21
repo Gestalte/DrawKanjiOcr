@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -42,12 +44,8 @@ namespace KanjiOcr
             Output.Text = "";
         }
 
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private async Task MakeImage()
         {
-            // TODO: Try to do this without saving the image.
-
-            Output.Text = "";
-
             FileStream fs = new FileStream(savePath, FileMode.Create);
 
             RenderTargetBitmap rtb = new RenderTargetBitmap
@@ -65,28 +63,52 @@ namespace KanjiOcr
 
             encoder.Save(fs);
             fs.Close();
-
-            var Result = DetectText();
-
-            Output.Text = Result;
         }
 
-        public string DetectText()
+        private async void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            var image = Google.Cloud.Vision.V1.Image.FromFile(savePath);
+            HightlightButton(btnSubmit);
 
-            ImageAnnotatorClient client = ImageAnnotatorClient.Create();
+            Output.Text = "Searching, please wait...";
 
-            IReadOnlyList<EntityAnnotation> textAnnotations = client.DetectText(image);
+            await MakeImage();
 
-            string output = "";
+            var Result = await DetectText();
 
-            foreach (EntityAnnotation text in textAnnotations)
-            {
-                output += (text.Description == "" ? "FAIL" : text.Description) + "\n";
-            }
+            Output.Text = "";
+            Output.Text = Result;
 
-            return output == "" ? "No matches" : output;
+            HightlightButton(btnWrite);
+        }
+
+        public async Task<string> DetectText()
+        {
+            var image = await Google.Cloud.Vision.V1.Image.FromFileAsync(savePath);
+
+            ImageAnnotatorClient client = await ImageAnnotatorClient.CreateAsync();
+
+            IReadOnlyList<EntityAnnotation> textAnnotations = await client.DetectTextAsync(image);
+
+            string output = null;
+
+            //foreach (EntityAnnotation text in textAnnotations)
+            //{
+            //    output += (text.Description == "" ? "FAIL" : text.Description) + "\n";
+            //}
+
+            output = textAnnotations.FirstOrDefault()?.Description;
+
+            return output ?? "No matches";
+        }
+
+        public void HightlightButton(Button btn)
+        {
+            btnWrite.BorderBrush = Brushes.LightPink;
+            btnClear.BorderBrush = Brushes.LightPink;
+            btnErase.BorderBrush = Brushes.LightPink;
+            btnSubmit.BorderBrush = Brushes.LightPink;
+
+            btn.BorderBrush = Brushes.DeepPink;
         }
 
         private void drawing_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -110,11 +132,15 @@ namespace KanjiOcr
 
         private void btnWrite_Click(object sender, RoutedEventArgs e)
         {
+            HightlightButton(btnWrite);
+
             Drawing.EditingMode = InkCanvasEditingMode.Ink;
         }
 
         private void btnErase_Click(object sender, RoutedEventArgs e)
         {
+            HightlightButton(btnErase);
+
             Drawing.EditingMode = InkCanvasEditingMode.EraseByStroke;
         }
     }

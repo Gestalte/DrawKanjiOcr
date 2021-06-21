@@ -17,6 +17,25 @@
             <Setter Property="Foreground" Value="DeepPink"/>
             <Setter Property="BorderThickness" Value="1.5"/>
             <Setter Property="BorderBrush" Value="LightPink"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightPink"/>
+                    <Setter Property="BorderBrush" Value="DeepPink"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="Image" x:Key="ButtonImage">
             <Setter Property="Width" Value="32"/>
@@ -32,16 +51,16 @@
         </Grid.RowDefinitions>
 
         <StackPanel VerticalAlignment="Top" Panel.ZIndex="2" Orientation="Horizontal">
-            <Button Style="{StaticResource ActionButton}" Click="btnWrite_Click">
+            <Button Style="{StaticResource ActionButton}" Click="btnWrite_Click" x:Name="btnWrite">
                 <Image Style="{StaticResource ButtonImage}" Source="images/write.png"></Image>
             </Button>
-            <Button Style="{StaticResource ActionButton}" Click="btnErase_Click">
+            <Button Style="{StaticResource ActionButton}" Click="btnErase_Click" x:Name="btnErase">
                 <Image Style="{StaticResource ButtonImage}" Source="images/erase.png"></Image>
             </Button>
-            <Button Style="{StaticResource ActionButton}" Click="btnClear_Click">
+            <Button Style="{StaticResource ActionButton}" Click="btnClear_Click" x:Name="btnClear">
                 <Image Style="{StaticResource ButtonImage}" Source="images/clear.png"></Image>
             </Button>
-            <Button Style="{StaticResource ActionButton}" Click="btnSubmit_Click">
+            <Button Style="{StaticResource ActionButton}" Click="btnSubmit_Click" x:Name="btnSubmit">
                 <Image Style="{StaticResource ButtonImage}" Source="images/search.png"></Image>
             </Button>
         </StackPanel>
@@ -51,7 +70,7 @@
         <TextBox
             Grid.Row="1"
             Name="Output"
-            FontSize="26"
+            FontSize="32"
             BorderThickness="2"
             BorderBrush="LightPink"
             Background="FloralWhite"
