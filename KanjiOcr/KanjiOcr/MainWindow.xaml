@@ -5,7 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KanjiOcr"
         mc:Ignorable="d"
-        Title="Kanji OCR" Height="500" Width="500">
+        Title="Kanji OCR" MinHeight="500" MinWidth="500" Height="500" Width="500">
+
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="ActionButton">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Width" Value="64"/>
+            <Setter Property="Height" Value="64"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background" Value="FloralWhite"/>
+            <Setter Property="Foreground" Value="DeepPink"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="BorderBrush" Value="LightPink"/>
+        </Style>
+        <Style TargetType="Image" x:Key="ButtonImage">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+    </Window.Resources>
+
     <Grid Background="AliceBlue">
 
         <Grid.RowDefinitions>
@@ -14,14 +32,29 @@
         </Grid.RowDefinitions>
 
         <StackPanel VerticalAlignment="Top" Panel.ZIndex="2" Orientation="Horizontal">
-            <Button Margin="2" Width="60" Height="60" x:Name="btnWrite"  FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnWrite_Click">Write</Button>
-            <Button Margin="2" Width="60" Height="60" x:Name="btnErase"  FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnErase_Click">Erase</Button>
-            <Button Margin="2" Width="60" Height="60" x:Name="btnClear"  FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnClear_Click">Clear</Button>
-            <Button Margin="2" Width="60" Height="60" x:Name="btnSubmit" FontSize="16" Background="FloralWhite" Foreground="DeepPink" BorderThickness="1.5" BorderBrush="AntiqueWhite" Click="btnSubmit_Click">Search</Button>
+            <Button Style="{StaticResource ActionButton}" Click="btnWrite_Click">
+                <Image Style="{StaticResource ButtonImage}" Source="images/write.png"></Image>
+            </Button>
+            <Button Style="{StaticResource ActionButton}" Click="btnErase_Click">
+                <Image Style="{StaticResource ButtonImage}" Source="images/erase.png"></Image>
+            </Button>
+            <Button Style="{StaticResource ActionButton}" Click="btnClear_Click">
+                <Image Style="{StaticResource ButtonImage}" Source="images/clear.png"></Image>
+            </Button>
+            <Button Style="{StaticResource ActionButton}" Click="btnSubmit_Click">
+                <Image Style="{StaticResource ButtonImage}" Source="images/search.png"></Image>
+            </Button>
         </StackPanel>
 
         <InkCanvas Panel.ZIndex="1" x:Name="Drawing" MouseDown="drawing_MouseDown_1"></InkCanvas>
 
-        <TextBox Grid.Row="1" Name="Output" FontSize="26" BorderThickness="2" BorderBrush="LightPink"  Background="FloralWhite" Foreground="DeepPink"></TextBox>
+        <TextBox
+            Grid.Row="1"
+            Name="Output"
+            FontSize="26"
+            BorderThickness="2"
+            BorderBrush="LightPink"
+            Background="FloralWhite"
+            Foreground="DeepPink"/>
     </Grid>
 </Window>

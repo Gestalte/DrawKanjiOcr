@@ -6,7 +6,38 @@
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <UserSecretsId>5f141f97-7b57-40e0-b56b-aa130358ebd7</UserSecretsId>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="images\clear.ico" />
+    <None Remove="images\clear.png" />
+    <None Remove="images\erase.ico" />
+    <None Remove="images\erase.png" />
+    <None Remove="images\icon.ico" />
+    <None Remove="images\search.ico" />
+    <None Remove="images\search.png" />
+    <None Remove="images\write.ico" />
+    <None Remove="images\write.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="images\clear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\erase.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\search.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\write.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Vision.V1" Version="2.2.0" />
