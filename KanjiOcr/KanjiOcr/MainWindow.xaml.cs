@@ -73,10 +73,17 @@ namespace KanjiOcr
 
             MakeImage();
 
-            var Result = await DetectText();
-
-            Output.Text = "";
-            Output.Text = Result;
+            try
+            {
+                var Result = await DetectText();
+                Output.Text = "";
+                Output.Text = Result;
+            }
+            catch (Exception ex)
+            {
+                Output.Text = "";
+                MessageBox.Show(ex.Message, "Error:");
+            }
 
             HightlightButton(btnWrite);
         }

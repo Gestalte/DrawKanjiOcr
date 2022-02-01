@@ -75,6 +75,7 @@
             BorderBrush="LightPink"
             Background="FloralWhite"
             Foreground="DeepPink"
-            IsReadOnly="True"/>
+            IsReadOnly="True"
+            TextWrapping="Wrap"/>
     </Grid>
 </Window>
