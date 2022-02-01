@@ -354,3 +354,6 @@ runsettings.runsettings
 [Aa]pp.config
 config.json
 kanjiocr-*.json
+
+launch.json
+tasks.json
