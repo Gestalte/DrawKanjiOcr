@@ -3,6 +3,8 @@ This WPF application lets you write a Kanji character with a mouse or drawing ta
 
 I made it for use with Kanji, but it will detect any hand writing that Google Cloud Vision can parse.
 
-![example1](https://github.com/Gestalte/DrawKanjiOcr/blob/master/drawkanji.PNG?raw=true)
+## Screen shots
 
-![example2](https://github.com/Gestalte/DrawKanjiOcr/blob/master/drawkanji2.PNG?raw=true)
+![example1](https://github.com/Gestalte/DrawKanjiOcr/blob/Master/drawkanji.PNG?raw=true)
+
+![example2](https://github.com/Gestalte/DrawKanjiOcr/blob/Master/drawkanji2.PNG?raw=true)
